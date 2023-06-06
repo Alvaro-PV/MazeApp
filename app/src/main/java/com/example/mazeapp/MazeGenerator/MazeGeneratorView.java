@@ -1,24 +1,21 @@
 package com.example.mazeapp.MazeGenerator;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.graphics.Rect;
-import android.view.Display;
+import android.util.AttributeSet;
 import android.view.View;
 
-import java.util.ArrayList;
+import androidx.annotation.Nullable;
 
-public class MazeGeneratorView extends View {
+public class MazeGeneratorView extends View{
 
     Context context;
-    static int dWidth, dHeight;
-    Rect background;
-    Paint wallColor, pathColor, activeCellColor;
-    ArrayList<Rect> cellList;
+
+    int[][] cellMatrix;
+    static int cWidth, cHeight;
 
     int[] cellColors = {
         Color.BLACK, //WALL
@@ -27,19 +24,38 @@ public class MazeGeneratorView extends View {
         Color.RED    //ACTIVE
     };
 
+/*----------------------------------------------------------Constructors------------------------------------------------------*/
     public MazeGeneratorView(Context context) {
         super(context);
         this.context = context;
+        init(null, 0, 0);
+    }
+    public MazeGeneratorView(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+        this.context = context;
+        init(attrs, 0, 0);
+    }
+    public MazeGeneratorView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        this.context = context;
+        init(attrs, defStyleAttr, 0);
+    }
+    public MazeGeneratorView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        this.context = context;
+        init(attrs, defStyleAttr, defStyleRes);
+    }
+/*----------------------------------------------------------------------------------------------------------------------------*/
+
+    private void init(@Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes){
+
+    }
 
 
-        //Get Display Sizes
-        Display display = ((Activity) getContext()).getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        dWidth = size.x;
-        dHeight = size.y;
-
-        background = new Rect(0, 0, dWidth, dHeight);
+    public void setCellMatrix(int[][] cellMatrix, int cWidth, int cHeight){
+        this.cellMatrix = cellMatrix;
+        this.cWidth = cWidth;
+        this.cHeight = cHeight;
         invalidate();
     }
 
@@ -47,26 +63,32 @@ public class MazeGeneratorView extends View {
     protected void onDraw(Canvas canvas){
         super.onDraw(canvas);
         Paint ex = new Paint();
-        ex.setColor(Color.DKGRAY);
+        ex.setColor(Color.RED);
+        Rect background = new Rect(0, 0, getWidth(), getHeight());
         canvas.drawRect(background, ex);
-        int[][] cells =
-                {{0, 0, 0, 0, 0},
-                 {0, 1, 1, 1, 0},
-                 {0, 0, 2, 1, 3},
-                 {0, 1, 1, 1, 0},
-                 {0, 0, 0, 0, 0}};
-        drawCellArray(canvas, cells, 5, 5);
+
     }
 
-    public void drawCellArray(Canvas canvas, int[][] cells, int cWidth, int cHeight){
-        int cellSize = dWidth/cWidth < dHeight/cHeight ? dWidth/cWidth : dHeight/cHeight;
-            for(int x = 0; x < cWidth; x++)
-                for(int y = 0; y < cHeight; y++) {
-                    if(cells[y][x] < cellColors.length){
-                        Paint cellPaint = new Paint();
-                        cellPaint.setColor(cellColors[cells[y][x]]);
-                        canvas.drawRect(new Rect(x * cellSize, y * cellSize, (x + 1) * cellSize, (y + 1) * cellSize), cellPaint);
-                    }
+    private void drawCellArray(Canvas canvas){
+        int dWidth = getWidth(), dHeight = getHeight();
+        int cellSize = 0, xOffset = 0, yOffset = 0;
+
+        if(dWidth / cWidth < dHeight / cHeight){
+            cellSize = dWidth / cWidth;
+            yOffset = (dHeight - cellSize * cHeight) / 2; //Center the maze vertically
+        }else{
+            cellSize = dHeight / cHeight;
+            xOffset = (dWidth - cellSize * cWidth) / 2; //Center the maze horizontally
+        }
+
+        for(int x = 0; x < cWidth; x++)
+            for(int y = 0; y < cHeight; y++) {
+                if(cellMatrix[y][x] < cellColors.length){
+                    Paint cellPaint = new Paint();
+                    cellPaint.setColor(cellColors[cellMatrix[y][x]]);
+                    canvas.drawRect(new Rect(x      * cellSize + xOffset,     y      * cellSize + yOffset,
+                                           (x + 1) * cellSize + xOffset, (y + 1) * cellSize + yOffset), cellPaint);
                 }
+            }
     }
 }
