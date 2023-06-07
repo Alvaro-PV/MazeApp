@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="cellValues">
+        <!-- WALL -->
+        <item>0</item>
+
+        <!-- PATH -->
+        <item>1</item>
+
+        <!-- INACTIVE -->
+        <item>2</item>
+
+        <!-- ACTIVE -->
+        <item>3</item>
+
+    </integer-array>
+</resources>

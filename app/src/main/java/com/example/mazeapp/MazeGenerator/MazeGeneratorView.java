@@ -6,23 +6,36 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.Nullable;
 
 public class MazeGeneratorView extends View{
 
+    String TAG = MazeGeneratorView.class.getSimpleName();
     Context context;
 
     int[][] cellMatrix;
     static int cWidth, cHeight;
 
-    int[] cellColors = {
+    int[] cellColors = {  //REDO WITH STYLES IN MIND !!!!!!!!!!!!!!!!!!!!
         Color.BLACK, //WALL
         Color.WHITE, //PATH
         Color.GREEN, //ORIGIN
-        Color.RED    //ACTIVE
+        Color.BLUE    //ACTIVE
     };
+
+    private OnClickListener listener;
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if(event.getAction() == MotionEvent.ACTION_UP) {
+            if(listener != null) listener.onClick(this);
+        }
+        return super.dispatchTouchEvent(event);
+    }
 
 /*----------------------------------------------------------Constructors------------------------------------------------------*/
     public MazeGeneratorView(Context context) {
@@ -53,6 +66,7 @@ public class MazeGeneratorView extends View{
 
 
     public void setCellMatrix(int[][] cellMatrix, int cWidth, int cHeight){
+        Log.e(TAG, "setCellMatrix()");
         this.cellMatrix = cellMatrix;
         this.cWidth = cWidth;
         this.cHeight = cHeight;
@@ -66,26 +80,41 @@ public class MazeGeneratorView extends View{
         ex.setColor(Color.RED);
         Rect background = new Rect(0, 0, getWidth(), getHeight());
         canvas.drawRect(background, ex);
-
+        if(cellMatrix != null) drawCellArray(canvas);
     }
 
     private void drawCellArray(Canvas canvas){
-        int dWidth = getWidth(), dHeight = getHeight();
-        int cellSize = 0, xOffset = 0, yOffset = 0;
+        int cellSize, longOffset = 0, shortOffset = 0;
+        int dLongEdge  = getWidth() > getHeight() ? getWidth() : getHeight();
+        int dShortEdge = getWidth() < getHeight() ? getWidth() : getHeight();
+        int cLongEdge  = cWidth > cHeight ? cWidth : cHeight;
+        int cShortEdge = cWidth < cHeight ? cWidth : cHeight;
 
-        if(dWidth / cWidth < dHeight / cHeight){
-            cellSize = dWidth / cWidth;
-            yOffset = (dHeight - cellSize * cHeight) / 2; //Center the maze vertically
+        Log.d(TAG, "dW: " + getWidth() + ", dH: " + getHeight());
+        Log.d(TAG, "cW: " + cWidth + ", cH: " + cHeight);
+        Log.d(TAG, "dL: " + dLongEdge + ", dS: " + dShortEdge);
+        Log.d(TAG, "cL: " + cLongEdge + ", cS: " + cShortEdge);
+
+        if(dLongEdge / cLongEdge < dShortEdge / cShortEdge){
+            cellSize = dLongEdge / cLongEdge;
+            shortOffset = (dShortEdge - cellSize * cShortEdge) / 2; //Center the maze vertically
         }else{
-            cellSize = dHeight / cHeight;
-            xOffset = (dWidth - cellSize * cWidth) / 2; //Center the maze horizontally
+            cellSize = dShortEdge / cShortEdge;
+            longOffset = (dLongEdge - cellSize * cLongEdge) / 2; //Center the maze horizontally
         }
 
-        for(int x = 0; x < cWidth; x++)
-            for(int y = 0; y < cHeight; y++) {
-                if(cellMatrix[y][x] < cellColors.length){
+        int xOffset = getWidth()   == dLongEdge ? longOffset : shortOffset;
+        int yOffset = getHeight()  == dLongEdge ? longOffset : shortOffset;
+        boolean matchCoordinates = (cWidth == cLongEdge) == (getWidth()  == dLongEdge); //matches the long edge of the Grid with the long edge of the View
+
+        for(int i = 0; i < cWidth; i++)
+            for(int j = 0; j < cHeight; j++) {
+                int x = matchCoordinates ?  i : j;
+                int y = !matchCoordinates ? i : j;
+
+                if(cellMatrix[j][i] < cellColors.length){
                     Paint cellPaint = new Paint();
-                    cellPaint.setColor(cellColors[cellMatrix[y][x]]);
+                    cellPaint.setColor(cellColors[cellMatrix[j][i]]);
                     canvas.drawRect(new Rect(x      * cellSize + xOffset,     y      * cellSize + yOffset,
                                            (x + 1) * cellSize + xOffset, (y + 1) * cellSize + yOffset), cellPaint);
                 }
