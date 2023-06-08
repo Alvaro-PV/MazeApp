@@ -1,11 +1,17 @@
 <resources>
     <string name="app_name">MazeApp</string>
 
+    <!-- Maze Setup Activity -->
     <string name="widthHint">Width</string>
     <string name="heightHint">Height</string>
     <string name="methodDropdownHint">Method</string>
     <string name="generateMazeButton">Generate Maze</string>
     <string name="mazeGenerationError">Invalid Generation Parameters</string>
 
+    <!-- Main Menu Activity -->
+    <string name="createMazeButtonView">Create New Maze</string>
+    <string name="mazeListButtonView">Maze List</string>
+    <string name="methodListButtonView">Method List</string>
+    <string name="logOutButtonView">Log Out</string>
 
 </resources>
