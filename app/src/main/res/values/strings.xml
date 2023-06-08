@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">MazeApp</string>
+
+    <string name="widthHint">Width</string>
+    <string name="heightHint">Height</string>
+    <string name="methodDropdownHint">Method</string>
+    <string name="generateMazeButton">Generate Maze</string>
+    <string name="mazeGenerationError">Invalid Generation Parameters</string>
+
+
 </resources>

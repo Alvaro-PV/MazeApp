@@ -9,32 +9,43 @@ public class MazeGeneratorModel implements MazeGeneratorContract.Model {
 
     private Random random = new Random();
     private int[] cellValues;
-    private String method;
+    private String generationMethod;
+    private String[] methods;
 
     private int cWidth, cHeight;
     private int mWidth, mHeight;
     private int[][] cellMatrix;
     private boolean mazeGenerated = false;
 
-
+    private boolean showSteps;
     private ArrayList<int[][]> generationFrames = new ArrayList<>();
-
     private int frameIndex = 0;
 
-    public MazeGeneratorModel(int[] cellValues) {
+    public MazeGeneratorModel(int[] cellValues, String[] methods) {
+        this.methods = methods;
         this.cellValues = cellValues;
     }
 
     @Override
-    public void setInitialParameters(int width, int height, String method){
-        this.method = method;
+    public void setInitialParameters(int width, int height, String generationMethod, boolean showSteps){
+        this.generationMethod = generationMethod;
+        this.showSteps = showSteps;
         this.mWidth = width;
         this.mHeight = height;
         this.cWidth = width * 2 + 1;
         this.cHeight = height * 2 + 1;
         cellMatrix = new int[cHeight][cWidth];
 
-        randomizedDepthFirstSearchAlgorithm();
+        for(int id = 0; id < methods.length; id++) if(methods[id].equals(generationMethod)){
+            switch (id){
+                case 0:
+                    randomizedDepthFirstSearchAlgorithm();
+                    break;
+                default:
+                    break;
+            }
+            break;
+        }
     }
 
     @Override
@@ -76,7 +87,7 @@ public class MazeGeneratorModel implements MazeGeneratorContract.Model {
         for (int[] offset : directions){
             try {
                 if(cellMatrix[activeY + offset[1]][activeX + offset[0]] == cellValues[2]){
-                    generationFrames.add(deepCopy(cellMatrix));
+                    if(showSteps) generationFrames.add(deepCopy(cellMatrix));
                     cellMatrix[activeY + offset[1] / 2][activeX + offset[0] / 2] = cellValues[3];
 
 
@@ -86,7 +97,7 @@ public class MazeGeneratorModel implements MazeGeneratorContract.Model {
             }catch (Exception e){}
         }
         cellMatrix[activeY][activeX] = cellValues[1];
-        generationFrames.add(deepCopy(cellMatrix));
+        if(showSteps) generationFrames.add(deepCopy(cellMatrix));
     }
 
     private static int[][] deepCopy(int[][] original) {

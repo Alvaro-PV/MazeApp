@@ -1,8 +1,7 @@
 package com.example.mazeapp.MazeGenerator;
 
-import android.util.Log;
-
-import com.example.mazeapp.Mediator;
+import com.example.mazeapp.App.MazeSetupState;
+import com.example.mazeapp.App.Mediator;
 
 import java.lang.ref.WeakReference;
 
@@ -16,7 +15,9 @@ public class MazeGeneratorPresenter implements MazeGeneratorContract.Presenter {
     }
     @Override
     public void onStart(){
-        model.setInitialParameters(10, 20, "");
+        MazeSetupState mazeSetupState = mediator.getMazeSetupState();
+        if(mazeSetupState == null) return;
+        model.setInitialParameters(mazeSetupState.width, mazeSetupState.height, mazeSetupState.method, mazeSetupState.showSteps);
         activity.get().updateMazeView(model.getNextFrame(), model.getcWidth(), model.getcHeight());
     }
 

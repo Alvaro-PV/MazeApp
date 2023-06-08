@@ -18,7 +18,7 @@ public interface MazeGeneratorContract {
         void onNextFrameButtonClicked();
     }
     interface Model {
-        void setInitialParameters(int width, int height, String method);
+        void setInitialParameters(int width, int height, String method, boolean showSteps);
         int getcWidth();
         int getcHeight();
         int[][] getCellMatrix();

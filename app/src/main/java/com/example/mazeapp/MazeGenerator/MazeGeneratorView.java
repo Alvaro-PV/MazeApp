@@ -61,7 +61,7 @@ public class MazeGeneratorView extends View{
 /*----------------------------------------------------------------------------------------------------------------------------*/
 
     private void init(@Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes){
-
+        
     }
 
 

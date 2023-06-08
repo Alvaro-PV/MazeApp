@@ -14,4 +14,10 @@
         <item>3</item>
 
     </integer-array>
+    <string-array name="generationMethods">
+        <item>Depth First Search</item>
+        <item>Test2</item>
+        <item>Test3</item>
+        <item>Test4</item>
+    </string-array>
 </resources>

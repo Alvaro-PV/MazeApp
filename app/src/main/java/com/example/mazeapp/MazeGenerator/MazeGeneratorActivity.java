@@ -10,7 +10,7 @@ import com.example.mazeapp.R;
 
 public class MazeGeneratorActivity extends AppCompatActivity implements MazeGeneratorContract.Activity{
 
-    public static String TAG = MazeGeneratorActivity.class.getSimpleName();
+    public static final String TAG = MazeGeneratorActivity.class.getSimpleName();
     MazeGeneratorContract.Presenter presenter;
 
     @Override
