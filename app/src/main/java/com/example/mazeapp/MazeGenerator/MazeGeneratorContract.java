@@ -1,9 +1,6 @@
 package com.example.mazeapp.MazeGenerator;
 
-import android.view.View;
-
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 
 public interface MazeGeneratorContract {
     interface Activity {
@@ -18,11 +15,14 @@ public interface MazeGeneratorContract {
         void onNextFrameButtonClicked();
     }
     interface Model {
-        void setInitialParameters(int width, int height, String method, boolean showSteps);
+        void setGenerationParameters(int width, int height, String method, boolean showSteps);
+        void setCompletedMatrix(int width, int height, int[][] cellMatrix, String method);
         int getcWidth();
         int getcHeight();
         int[][] getCellMatrix();
         int[][] getNextFrame();
+
+        boolean canShowSteps();
 
     }
 }

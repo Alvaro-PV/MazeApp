@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mazeapp.App.Mediator;
 import com.example.mazeapp.MazeGenerator.MazeGeneratorActivity;
+import com.example.mazeapp.MazeList.MazeListActivity;
 import com.example.mazeapp.MazeSetup.MazeSetupActivity;
 import com.example.mazeapp.R;
 
@@ -17,7 +18,8 @@ public class MainMenuActivity extends AppCompatActivity {
 
     public static final String TAG = MazeGeneratorActivity.class.getSimpleName();
 
-    Button createMazeButtonView;
+    Button createMazeButtonView, mazeListButtonView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +37,20 @@ public class MainMenuActivity extends AppCompatActivity {
         createMazeButtonView.setOnClickListener(view -> {
             navigateToMazeSetupActivity();
         });
+
+        mazeListButtonView = findViewById(R.id.mazeListButtonView);
+        mazeListButtonView.setOnClickListener(view -> {
+            navigateToMazeListActivity();
+        });
     }
 
     private void navigateToMazeSetupActivity() {
         Intent intent = new Intent(this, MazeSetupActivity.class);
+        startActivity(intent);
+    }
+
+    private void navigateToMazeListActivity() {
+        Intent intent = new Intent(this, MazeListActivity.class);
         startActivity(intent);
     }
 }

@@ -17,8 +17,12 @@ public class MazeGeneratorPresenter implements MazeGeneratorContract.Presenter {
     public void onStart(){
         MazeSetupState mazeSetupState = mediator.getMazeSetupState();
         if(mazeSetupState == null) return;
-        model.setInitialParameters(mazeSetupState.width, mazeSetupState.height, mazeSetupState.method, mazeSetupState.showSteps);
-        activity.get().updateMazeView(model.getNextFrame(), model.getcWidth(), model.getcHeight());
+
+        if (mazeSetupState.cellMatrix == null) model.setGenerationParameters(mazeSetupState.width, mazeSetupState.height, mazeSetupState.method, mazeSetupState.showSteps);
+        else model.setCompletedMatrix(mazeSetupState.width, mazeSetupState.height, mazeSetupState.cellMatrix, mazeSetupState.method);
+
+        if(model.canShowSteps()) activity.get().updateMazeView(model.getNextFrame(), model.getcWidth(), model.getcHeight());
+        else activity.get().updateMazeView(model.getCellMatrix(), model.getcWidth(), model.getcHeight());
     }
 
     @Override

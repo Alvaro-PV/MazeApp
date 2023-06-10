@@ -27,7 +27,7 @@ public class MazeGeneratorModel implements MazeGeneratorContract.Model {
     }
 
     @Override
-    public void setInitialParameters(int width, int height, String generationMethod, boolean showSteps){
+    public void setGenerationParameters(int width, int height, String generationMethod, boolean showSteps){
         this.generationMethod = generationMethod;
         this.showSteps = showSteps;
         this.mWidth = width;
@@ -48,6 +48,18 @@ public class MazeGeneratorModel implements MazeGeneratorContract.Model {
         }
     }
 
+    @Override
+    public void setCompletedMatrix(int width, int height, int[][] cellMatrix, String generationMethod) {
+        this.generationMethod = generationMethod;
+        this.cWidth = width;
+        this.cHeight = height;
+        this.cellMatrix = cellMatrix;
+        mazeGenerated = true;
+        showSteps = false;
+    }
+
+    @Override
+    public boolean canShowSteps(){return showSteps;}
     @Override
     public int getcWidth() {
         return cWidth;

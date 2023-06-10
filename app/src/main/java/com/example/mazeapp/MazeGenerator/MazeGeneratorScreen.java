@@ -20,7 +20,6 @@ public class MazeGeneratorScreen {
 
         MazeGeneratorContract.Presenter presenter = new MazeGeneratorPresenter(mediator);
         MazeGeneratorContract.Model model = new MazeGeneratorModel(cellValues, methods);
-        MazeGeneratorView mazeGeneratorView = new MazeGeneratorView(context.get());
 
         presenter.injectActivity(new WeakReference<>(activity));
         presenter.injectModel(model);

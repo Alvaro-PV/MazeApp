@@ -13,5 +13,6 @@
     <string name="mazeListButtonView">Maze List</string>
     <string name="methodListButtonView">Method List</string>
     <string name="logOutButtonView">Log Out</string>
+    <string name="maze_list_item">Maze List Item</string>
 
 </resources>
