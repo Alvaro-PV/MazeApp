@@ -16,8 +16,8 @@ public interface RepositoryContract {
     interface GetMazeListCallback {
         void setMazeList(List<MazeListItem> mazeList);
     }
-    interface GetMazeListUsedIdsCallback {
-        void onMazeListUsedIdsReceived(ArrayList<Integer> ids);
+    interface GetUnusedMazeListItemIdCallback {
+        void onGetUnusedMazeListItemIdCallback(int id);
     }
     interface GetMazeListItemCallback {
         void setMazeListItem(MazeListItem item);
@@ -33,7 +33,7 @@ public interface RepositoryContract {
     }
 
     void getMazeList(AppRepository.GetMazeListCallback callback);
-    void getMazeListUsedIds(AppRepository.GetMazeListUsedIdsCallback callback);
+    void getUnusedMazeListItemId(AppRepository.GetUnusedMazeListItemIdCallback callback);
     void getMazeListItem(int id, AppRepository.GetMazeListItemCallback callback);
     void deleteMazeListItem(MazeListItem item, AppRepository.DeleteMazeListItemCallback callback);
     void updateMazeListItem(MazeListItem item, AppRepository.UpdateMazeListItemCallback callback);

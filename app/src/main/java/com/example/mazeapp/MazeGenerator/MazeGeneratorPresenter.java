@@ -1,11 +1,16 @@
 package com.example.mazeapp.MazeGenerator;
 
+import android.util.Log;
+
 import com.example.mazeapp.App.MazeSetupState;
 import com.example.mazeapp.App.Mediator;
+import com.example.mazeapp.MazeLogAndSignIn.MazeLogAndSignInActivity;
 
 import java.lang.ref.WeakReference;
 
 public class MazeGeneratorPresenter implements MazeGeneratorContract.Presenter {
+
+    public static final String TAG = MazeLogAndSignInActivity.class.getSimpleName();
     private WeakReference<MazeGeneratorContract.Activity> activity;
     private MazeGeneratorContract.Model model;
     private Mediator mediator;
@@ -15,14 +20,13 @@ public class MazeGeneratorPresenter implements MazeGeneratorContract.Presenter {
     }
     @Override
     public void onStart(){
+        Log.e(TAG, "onStart()");
         MazeSetupState mazeSetupState = mediator.getMazeSetupState();
         if(mazeSetupState == null) return;
 
-        if (mazeSetupState.cellMatrix == null) model.setGenerationParameters(mazeSetupState.width, mazeSetupState.height, mazeSetupState.method, mazeSetupState.showSteps);
-        else model.setCompletedMatrix(mazeSetupState.width, mazeSetupState.height, mazeSetupState.cellMatrix, mazeSetupState.method);
-
-        if(model.canShowSteps()) activity.get().updateMazeView(model.getNextFrame(), model.getcWidth(), model.getcHeight());
-        else activity.get().updateMazeView(model.getCellMatrix(), model.getcWidth(), model.getcHeight());
+        model.setupMaze(mazeSetupState);
+        activity.get().updateMazeView(model.getNextFrame(), model.getWidth(), model.getHeight());
+        if(mazeSetupState.loadingFromSave) activity.get().updateToSavedMazeButtonLayout(false);
     }
 
     @Override
@@ -31,11 +35,16 @@ public class MazeGeneratorPresenter implements MazeGeneratorContract.Presenter {
     }
     @Override
     public void onNextFrameButtonClicked(){
-        activity.get().updateMazeView(model.getNextFrame(), model.getcWidth(), model.getcHeight());
+        activity.get().updateMazeView(model.getNextFrame(), model.getWidth(), model.getHeight());
     }
 
     @Override
-    public void saveCurrentMazeButtonClicked(){
+    public void onPreviousFrameButtonClicked(){
+        activity.get().updateMazeView(model.getPreviousFrame(), model.getWidth(), model.getHeight());
+    }
+
+    @Override
+    public void saveAndFavoriteButtonClicked(){
         model.saveCurrentMaze(() -> {
             activity.get().onCurrentMazeSaved();
         });

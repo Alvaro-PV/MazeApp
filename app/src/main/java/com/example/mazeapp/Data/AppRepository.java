@@ -77,14 +77,19 @@ public class AppRepository implements RepositoryContract{
     }
 
     @Override
-    public void getMazeListUsedIds(final GetMazeListUsedIdsCallback callback) {
+    public void getUnusedMazeListItemId(final GetUnusedMazeListItemIdCallback callback) {
         AsyncTask.execute(() -> {
-            if(callback == null) return;
-
             List<MazeListItem> mazeList = getMazeItemListDao().loadMazeList();
-            ArrayList<Integer> usedIds = new ArrayList<>();
-            for(MazeListItem item : mazeList) usedIds.add(item.id);
-            callback.onMazeListUsedIdsReceived(usedIds);
+            boolean foundUnusedId = false;
+            int id = 0;
+            while (!foundUnusedId){
+                foundUnusedId = true;
+                for(MazeListItem mazeListItem : mazeList) if (id == mazeListItem.id){
+                    foundUnusedId = false;
+                    id++;
+                }
+            }
+            if(callback != null) callback.onGetUnusedMazeListItemIdCallback(id);
         });
     }
 

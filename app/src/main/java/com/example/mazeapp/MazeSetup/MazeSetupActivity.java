@@ -68,20 +68,35 @@ public class MazeSetupActivity extends AppCompatActivity {
         });
 
         genMazeButtonView.setOnClickListener(view -> {
-            if(passStateToMazeGeneratorActivity()) navigateToMazeGeneratorActivity();
-            else errorTextView.setText(R.string.mazeGenerationError);
+            int error = passStateToMazeGeneratorActivity();
+            switch (error){
+                case 0:
+                    navigateToMazeGeneratorActivity();
+                    break;
+                case -1:
+                    errorTextView.setText(R.string.mazeGenerationError);
+                    break;
+                case -2:
+                    errorTextView.setText(getString(R.string.mazeAboveMaxSizeError, "width", getResources().getInteger(R.integer.mazeMaxSize)));
+                    break;
+                case -3:
+                    errorTextView.setText(getString(R.string.mazeAboveMaxSizeError, "height", getResources().getInteger(R.integer.mazeMaxSize)));
+                    break;
+            }
         });
     }
-    private boolean passStateToMazeGeneratorActivity() {
+    private int passStateToMazeGeneratorActivity() {
         int width, height;
         try{
             width = Integer.parseInt(widthInputView.getText().toString());
             height = Integer.parseInt(heightInputView.getText().toString());
-        }catch (Exception e){return false;}
-        if(currentItem == null || width <= 0 || height <= 0) return false;
+        }catch (Exception e){return -1;}
+        if(currentItem == null || width <= 0 || height <= 0) return -1;
+        if(width > getResources().getInteger(R.integer.mazeMaxSize)) return -2;
+        if(height > getResources().getInteger(R.integer.mazeMaxSize)) return -3;
 
-        mediator.setMazeSetupState(new MazeSetupState(width, height, currentItem, true));
-        return true;
+        mediator.setMazeSetupState(new MazeSetupState(width * 2 + 1, height * 2 + 1, mediator.getActiveUser().username, currentItem, true));
+        return 0;
     }
 
     private void navigateToMazeGeneratorActivity() {

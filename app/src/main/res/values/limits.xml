@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="mazeMaxSize">50</integer>
+    <integer name="passwordMinChars">4</integer>
+    <integer name="passwordMaxChars">20</integer>
+    <integer name="usernameMinChars">1</integer>
+    <integer name="usernameMaxChars">20</integer>
+</resources>

@@ -77,14 +77,21 @@ public class MazeLogAndSignInActivity extends AppCompatActivity {
                 }
             }
         });
-        credentialsErrorTextView.setText(R.string.credentialsErrorTextViewLogInError);
+        runOnUiThread(() -> {
+            credentialsErrorTextView.setText(R.string.credentialsErrorTextViewLogInError);
+        });
     }
 
     private void onSignInButtonViewClicked(){
         if(!credentialsValid()) return;
 
         repository.getUserList(userList -> {
-            for(UserItem user : userList) if(usernameTextView.getText().toString().equals(user.username)) return;
+            for(UserItem user : userList) if(usernameTextView.getText().toString().equals(user.username)) {
+                runOnUiThread(() -> {
+                    credentialsErrorTextView.setText(R.string.credentialsErrorTextViewSignInError);
+                });
+                return;
+            }
             repository.getUnusedUserId(id -> {
                 UserItem newUser = new UserItem(id, usernameTextView.getText().toString(), passwordTextView.getText().toString());
                 repository.addUserItem(newUser, () -> {
@@ -93,7 +100,6 @@ public class MazeLogAndSignInActivity extends AppCompatActivity {
                 });
             });
         });
-        credentialsErrorTextView.setText(R.string.credentialsErrorTextViewSignInError);
     }
 
     private boolean credentialsMatch(UserItem user){
@@ -101,12 +107,22 @@ public class MazeLogAndSignInActivity extends AppCompatActivity {
     }
 
     private boolean credentialsValid(){
-        if(usernameTextView.getText().toString().length() == 0) {
-            credentialsErrorTextView.setText(R.string.credentialsErrorTextViewInvalidUsername);
+        if(usernameTextView.getText().toString().length() < getResources().getInteger(R.integer.usernameMinChars) ||
+                usernameTextView.getText().toString().length() > getResources().getInteger(R.integer.usernameMaxChars)) {
+            credentialsErrorTextView.setText(getString(
+                    R.string.credentialsErrorTextViewInvalidCredentials,
+                    "Username",
+                    getResources().getInteger(R.integer.usernameMinChars),
+                    getResources().getInteger(R.integer.usernameMaxChars)));
             return false;
         }
-        if(passwordTextView.getText().toString().length() < 6){
-            credentialsErrorTextView.setText(R.string.credentialsErrorTextViewInvalidPassword);
+        if(passwordTextView.getText().toString().length() < getResources().getInteger(R.integer.passwordMinChars) ||
+                passwordTextView.getText().toString().length() > getResources().getInteger(R.integer.passwordMaxChars)){
+            credentialsErrorTextView.setText(getString(
+                    R.string.credentialsErrorTextViewInvalidCredentials,
+                    "Password",
+                    getResources().getInteger(R.integer.passwordMinChars),
+                    getResources().getInteger(R.integer.passwordMaxChars)));
             return false;
         }
         return true;

@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">MazeApp</string>
-    <!-- Maze Setup Activity -->
+    <!-- Maze Generator Activity -->
+    <string name="prevStepButtonView">Previous step</string>
+    <string name="nextStepButtonView">Next step</string>
+    <string name="saveAndFavoriteButtonViewSaveState">Save Maze</string>
+    <string name="saveAndFavoriteButtonViewFavoriteState">Add to favorites</string>
+    <string name="saveAndFavoriteButtonViewUnfavoriteState">Remove from favorites</string>
 
     <!-- Maze Setup Activity -->
     <string name="widthHint">Width</string>
@@ -8,6 +13,7 @@
     <string name="methodDropdownHint">Method</string>
     <string name="generateMazeButton">Generate Maze</string>
     <string name="mazeGenerationError">Invalid Generation Parameters</string>
+    <string name="mazeAboveMaxSizeError">Maximum maze %1$s is %2$d</string>
 
     <!-- Main Menu Activity -->
     <string name="createMazeButtonView">Create New Maze</string>
@@ -22,8 +28,7 @@
     <string name="signInButtonView">Sign In</string>
     <string name="usernameTextView">Username</string>
     <string name="passwordTextView">Password</string>
-    <string name="credentialsErrorTextViewInvalidUsername">Username field must not be empty</string>
-    <string name="credentialsErrorTextViewInvalidPassword">Password too short (min. 6 characters)</string>
+    <string name="credentialsErrorTextViewInvalidCredentials">%1$s must be between %2$d and %3$d characters long</string>
     <string name="credentialsErrorTextViewLogInError">Invalid credentials</string>
     <string name="credentialsErrorTextViewSignInError">Username taken</string>
 

@@ -5,11 +5,8 @@ import android.util.Log;
 import com.example.mazeapp.App.MazeSetupState;
 import com.example.mazeapp.App.Mediator;
 import com.example.mazeapp.Data.MazeListItem;
-import com.example.mazeapp.Data.RepositoryContract;
-import com.example.mazeapp.MazeGenerator.MazeGeneratorContract;
 
 import java.lang.ref.WeakReference;
-import java.util.List;
 
 public class MazeListPresenter implements MazeListContract.Presenter {
 
@@ -33,18 +30,8 @@ public class MazeListPresenter implements MazeListContract.Presenter {
     @Override
     public void selectMazeItem(MazeListItem item) {
         Log.e(TAG, "selectMazeItem()");
-        int[][] cellMatrix = new int[item.height][item.width];
-        char[] rawMatrix = item.cellGrid.toCharArray();
 
-        if(item.width * item.height != rawMatrix.length) {
-            Log.e(TAG, "selectMazeItem(): tried to load a maze with incoherent data");
-            return;
-        }
-        for(int x = 0; x < item.width; x++)
-            for(int y = 0; y < item.height; y++)
-                cellMatrix[y][x] = Character.getNumericValue(rawMatrix[y * item.width + x]);
-
-        MazeSetupState mazeSetupState = new MazeSetupState(item.width, item.height, cellMatrix, item.method);
+        MazeSetupState mazeSetupState = new MazeSetupState(item);
         mediator.setMazeSetupState(mazeSetupState);
         activity.get().navigateToMazeGeneratorActivity();
     }

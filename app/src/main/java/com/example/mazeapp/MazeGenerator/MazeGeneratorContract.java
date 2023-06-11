@@ -1,11 +1,14 @@
 package com.example.mazeapp.MazeGenerator;
 
+import com.example.mazeapp.App.MazeSetupState;
+
 import java.lang.ref.WeakReference;
 
 public interface MazeGeneratorContract {
     interface Activity {
         void injectPresenter(Presenter presenter);
         void updateMazeView(int[][] cellMatrix, int cWidth, int cHeight);
+        void updateToSavedMazeButtonLayout(boolean isFavorite);
         void onCurrentMazeSaved();
     }
     interface Presenter {
@@ -14,19 +17,18 @@ public interface MazeGeneratorContract {
         void onStart();
         void onRestart();
         void onNextFrameButtonClicked();
-        void saveCurrentMazeButtonClicked();
+        void onPreviousFrameButtonClicked();
+        void saveAndFavoriteButtonClicked();
         interface SaveCurrentMazeCallback{
             void onSavedCurrentMaze();
         }
     }
     interface Model {
-        void setGenerationParameters(int width, int height, String method, boolean showSteps);
-        void setCompletedMatrix(int width, int height, int[][] cellMatrix, String method);
-        int getcWidth();
-        int getcHeight();
-        int[][] getCellMatrix();
+        void setupMaze(MazeSetupState mazeSetupState);
+        int getWidth();
+        int getHeight();
         int[][] getNextFrame();
-        boolean canShowSteps();
+        int[][] getPreviousFrame();
         void saveCurrentMaze(MazeGeneratorContract.Presenter.SaveCurrentMazeCallback callback);
 
     }

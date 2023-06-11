@@ -15,9 +15,7 @@ public class MazeGeneratorActivity extends AppCompatActivity implements MazeGene
     public static final String TAG = MazeGeneratorActivity.class.getSimpleName();
     MazeGeneratorContract.Presenter presenter;
 
-    Button prevStepAndSaveButton;
-    Button AutoStepAndSaveExitButton;
-    Button nextStepAndExitButton;
+    Button prevStepButtonView, nextStepButtonView, saveAndFavoriteButtonView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,20 +28,21 @@ public class MazeGeneratorActivity extends AppCompatActivity implements MazeGene
         setContentView(R.layout.maze_generator_activity);
         MazeGeneratorScreen.configure(this);
 
-        prevStepAndSaveButton = findViewById(R.id.prevStepAndSaveButton);
-        AutoStepAndSaveExitButton = findViewById(R.id.AutoStepAndSaveExitButton);
-        nextStepAndExitButton = findViewById(R.id.nextStepAndExitButton);
+        prevStepButtonView = findViewById(R.id.prevStepButtonView);
+        nextStepButtonView = findViewById(R.id.nextStepButtonView);
+        saveAndFavoriteButtonView = findViewById(R.id.saveAndFavoriteButtonView);
 
-        prevStepAndSaveButton.setOnClickListener(view -> {
-
+        prevStepButtonView.setOnClickListener(view -> {
+            presenter.onPreviousFrameButtonClicked();
         });
 
-        AutoStepAndSaveExitButton.setOnClickListener(view -> {
-            presenter.saveCurrentMazeButtonClicked();
-        });
+        nextStepButtonView.setOnClickListener(view -> {
 
-        nextStepAndExitButton.setOnClickListener(view -> {
             presenter.onNextFrameButtonClicked();
+        });
+
+        saveAndFavoriteButtonView.setOnClickListener(view -> {
+            presenter.saveAndFavoriteButtonClicked();
         });
 
         if(savedInstanceState == null) presenter.onStart();
@@ -61,8 +60,19 @@ public class MazeGeneratorActivity extends AppCompatActivity implements MazeGene
     }
 
     @Override
+    public void updateToSavedMazeButtonLayout(boolean isFavorite){
+        Log.e(TAG, "updateButtonLayout()");
+        prevStepButtonView.setVisibility(View.GONE);
+        nextStepButtonView.setVisibility(View.GONE);
+
+        if(isFavorite) saveAndFavoriteButtonView.setText(R.string.saveAndFavoriteButtonViewUnfavoriteState);
+        else saveAndFavoriteButtonView.setText(R.string.saveAndFavoriteButtonViewFavoriteState);
+    }
+
+    @Override
     public  void onCurrentMazeSaved(){
         runOnUiThread(() -> {
+            updateToSavedMazeButtonLayout(false);
             CharSequence text = "Maze Saved";
             int duration = Toast.LENGTH_SHORT;
             Toast toast = Toast.makeText(this, text, duration);
