@@ -1,5 +1,6 @@
 package com.example.mazeapp.MazeGenerator;
 
+import com.example.mazeapp.App.MazeGeneratorState;
 import com.example.mazeapp.App.MazeState;
 
 import java.lang.ref.WeakReference;
@@ -15,7 +16,7 @@ public interface MazeGeneratorContract {
         void injectActivity(WeakReference<Activity> Activity);
         void injectModel(Model model);
         void onStart();
-        void onRestart();
+        void onDestroy();
         void onNextFrameButtonClicked();
         void onPreviousFrameButtonClicked();
         void saveAndFavoriteButtonClicked();
@@ -25,6 +26,9 @@ public interface MazeGeneratorContract {
     }
     interface Model {
         void setupMaze(MazeState mazeState);
+        void setupMaze(MazeState mazeState, int frameIndex, boolean mazeGenerated);
+        MazeGeneratorState getMazeGeneratorState();
+        void loadFromMazeGeneratorState(MazeGeneratorState mazeGeneratorState);
         MazeState getMazeState();
         int[][] getNextFrame();
         int[][] getPreviousFrame();

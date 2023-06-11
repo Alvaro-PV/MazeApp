@@ -2,6 +2,7 @@ package com.example.mazeapp.MazeGenerator;
 
 import android.util.Log;
 
+import com.example.mazeapp.App.MazeGeneratorState;
 import com.example.mazeapp.App.MazeState;
 import com.example.mazeapp.App.Mediator;
 import com.example.mazeapp.MazeLogAndSignIn.MazeLogAndSignInActivity;
@@ -15,24 +16,28 @@ public class MazeGeneratorPresenter implements MazeGeneratorContract.Presenter {
     private MazeGeneratorContract.Model model;
     private Mediator mediator;
 
+    private MazeGeneratorState mazeGeneratorState;
+
     public MazeGeneratorPresenter(Mediator mediator) {
         this.mediator = mediator;
+        if(mediator.getMazeGeneratorState() != null) mazeGeneratorState = mediator.getMazeGeneratorState();
     }
     @Override
     public void onStart(){
         Log.e(TAG, "onStart()");
-        MazeState mazeState = mediator.getMazeSetupState();
-        if(mazeState == null) return;
+        if(mazeGeneratorState != null) model.loadFromMazeGeneratorState(mazeGeneratorState);
+        else model.setupMaze(mediator.getMazeSetupState());
 
-        model.setupMaze(mazeState);
         onNextFrameButtonClicked();
-        if(mazeState.loadingFromSave) activity.get().updateToSavedMazeButtonLayout(mediator.getActiveUser().id != -1, false);
+        if(mediator.getMazeSetupState().loadingFromSave) activity.get().updateToSavedMazeButtonLayout(mediator.getActiveUser().id != -1, false);
     }
 
     @Override
-    public void onRestart(){
-
+    public void onDestroy(){
+        onPreviousFrameButtonClicked();
+        mediator.setMazeGeneratorState(model.getMazeGeneratorState());
     }
+
     @Override
     public void onNextFrameButtonClicked(){
         activity.get().updateMazeView(model.getNextFrame(), model.getMazeState().width, model.getMazeState().height);
@@ -49,6 +54,7 @@ public class MazeGeneratorPresenter implements MazeGeneratorContract.Presenter {
             model.saveCurrentMaze(() -> {
                 activity.get().onCurrentMazeSaved();
                 activity.get().updateToSavedMazeButtonLayout(mediator.getActiveUser().id != -1, false);
+                onNextFrameButtonClicked();
             });
         else {
             model.setFavoriteRelation(mediator.getActiveUser().id);

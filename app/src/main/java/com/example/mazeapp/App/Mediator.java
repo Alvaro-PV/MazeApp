@@ -5,6 +5,8 @@ import com.example.mazeapp.Data.UserItem;
 public class Mediator {
 
     private MazeState mazeState;
+
+    private MazeGeneratorState mazeGeneratorState;
     private boolean loadingFavoritesList = false;
     private UserItem activeUser;
     private static Mediator INSTANCE;
@@ -42,5 +44,13 @@ public class Mediator {
 
     public void setLoadingFavoritesList(boolean loadingFavoritesList) {
         this.loadingFavoritesList = loadingFavoritesList;
+    }
+
+    public MazeGeneratorState getMazeGeneratorState() {
+        return mazeGeneratorState;
+    }
+
+    public void setMazeGeneratorState(MazeGeneratorState mazeGeneratorState) {
+        this.mazeGeneratorState = mazeGeneratorState;
     }
 }

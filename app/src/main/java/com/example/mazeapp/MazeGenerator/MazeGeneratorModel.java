@@ -1,5 +1,6 @@
 package com.example.mazeapp.MazeGenerator;
 
+import com.example.mazeapp.App.MazeGeneratorState;
 import com.example.mazeapp.App.MazeState;
 import com.example.mazeapp.Data.MazeListItem;
 import com.example.mazeapp.Data.RepositoryContract;
@@ -32,11 +33,31 @@ public class MazeGeneratorModel implements MazeGeneratorContract.Model {
     }
 
     @Override
+    public MazeGeneratorState getMazeGeneratorState(){
+        return new MazeGeneratorState(activeMaze, frameIndex, generationFrames);
+    }
+
+    @Override
+    public void loadFromMazeGeneratorState(MazeGeneratorState mazeGeneratorState){
+        this.activeMaze = mazeGeneratorState.mazeState;
+        this.frameIndex = mazeGeneratorState.frameIndex;
+        this.generationFrames = mazeGeneratorState.generationFrames;
+        this.mazeGenerated = true;
+    }
+
+    @Override
+    public void setupMaze(MazeState mazeState, int frameIndex, boolean mazeGenerated){
+        this.frameIndex = frameIndex;
+        this.mazeGenerated = mazeGenerated;
+        setupMaze(mazeState);
+    }
+
+    @Override
     public void setupMaze(MazeState mazeState){
         activeMaze = mazeState;
-        mazeGenerated = activeMaze.loadingFromSave;
+        if(activeMaze.loadingFromSave) mazeGenerated = true;
 
-        if(!activeMaze.loadingFromSave)
+        if(!mazeGenerated)
             for (int id = 0; id < methods.length; id++)
                 if (methods[id].equals(activeMaze.method))
                     switch (id) {
@@ -47,6 +68,7 @@ public class MazeGeneratorModel implements MazeGeneratorContract.Model {
                             break;
                     }
         generationFrames.add(activeMaze.cellMatrix);
+        mazeGenerated = true;
     }
 
     @Override
@@ -67,6 +89,7 @@ public class MazeGeneratorModel implements MazeGeneratorContract.Model {
     @Override
     public void saveCurrentMaze(MazeGeneratorContract.Presenter.SaveCurrentMazeCallback callback) {
         repository.getUnusedMazeListItemId(id -> {
+            frameIndex = generationFrames.size() -1;
             String cellString = "";
             for(int y = 0; y < activeMaze.height; y++) for(int x = 0; x < activeMaze.width; x++)
                 cellString += Integer.toString(activeMaze.cellMatrix[y][x]);

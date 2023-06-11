@@ -45,9 +45,13 @@ public class MazeGeneratorActivity extends AppCompatActivity implements MazeGene
             presenter.saveAndFavoriteButtonClicked();
         });
 
-        if(savedInstanceState == null) presenter.onStart();
-        else presenter.onRestart();
+        presenter.onStart();
+    }
 
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        presenter.onDestroy();
     }
 
     @Override

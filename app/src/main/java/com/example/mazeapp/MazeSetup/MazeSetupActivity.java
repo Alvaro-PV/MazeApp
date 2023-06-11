@@ -94,6 +94,7 @@ public class MazeSetupActivity extends AppCompatActivity {
         if(height > getResources().getInteger(R.integer.mazeMaxSize)) return -3;
 
         mediator.setMazeSetupState(new MazeState(width * 2 + 1, height * 2 + 1, mediator.getActiveUser().username, currentItem, true));
+        mediator.setMazeGeneratorState(null);
         return 0;
     }
 

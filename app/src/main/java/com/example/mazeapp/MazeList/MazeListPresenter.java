@@ -33,6 +33,7 @@ public class MazeListPresenter implements MazeListContract.Presenter {
 
         MazeState mazeState = new MazeState(item);
         mediator.setMazeSetupState(mazeState);
+        mediator.setMazeGeneratorState(null);
         activity.get().navigateToMazeGeneratorActivity();
     }
 
