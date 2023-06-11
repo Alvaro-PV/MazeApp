@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.mazeapp.R;
 
@@ -13,6 +15,9 @@ public class MazeGeneratorActivity extends AppCompatActivity implements MazeGene
     public static final String TAG = MazeGeneratorActivity.class.getSimpleName();
     MazeGeneratorContract.Presenter presenter;
 
+    Button prevStepAndSaveButton;
+    Button AutoStepAndSaveExitButton;
+    Button nextStepAndExitButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +29,22 @@ public class MazeGeneratorActivity extends AppCompatActivity implements MazeGene
 
         setContentView(R.layout.maze_generator_activity);
         MazeGeneratorScreen.configure(this);
+
+        prevStepAndSaveButton = findViewById(R.id.prevStepAndSaveButton);
+        AutoStepAndSaveExitButton = findViewById(R.id.AutoStepAndSaveExitButton);
+        nextStepAndExitButton = findViewById(R.id.nextStepAndExitButton);
+
+        prevStepAndSaveButton.setOnClickListener(view -> {
+
+        });
+
+        AutoStepAndSaveExitButton.setOnClickListener(view -> {
+            presenter.saveCurrentMazeButtonClicked();
+        });
+
+        nextStepAndExitButton.setOnClickListener(view -> {
+            presenter.onNextFrameButtonClicked();
+        });
 
         if(savedInstanceState == null) presenter.onStart();
         else presenter.onRestart();
@@ -39,7 +60,13 @@ public class MazeGeneratorActivity extends AppCompatActivity implements MazeGene
         ((MazeGeneratorView) findViewById(R.id.mazeGeneratorView)).setCellMatrix(cellMatrix, cWidth, cHeight);
     }
 
-    public void onNextFrameButtonClicked(View view) {
-        presenter.onNextFrameButtonClicked();
+    @Override
+    public  void onCurrentMazeSaved(){
+        runOnUiThread(() -> {
+            CharSequence text = "Maze Saved";
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(this, text, duration);
+            toast.show();
+        });
     }
 }

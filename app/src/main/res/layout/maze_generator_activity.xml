@@ -27,23 +27,22 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <Button
-            android:id="@+id/button4"
+            android:id="@+id/prevStepAndSaveButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Button"
-            android:onClick="onNextFrameButtonClicked"
+            android:text="Prev"
             />
 
         <Button
-            android:id="@+id/button5"
+            android:id="@+id/AutoStepAndSaveExitButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Button" />
+            android:text="Save" />
 
         <Button
-            android:id="@+id/button6"
+            android:id="@+id/nextStepAndExitButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

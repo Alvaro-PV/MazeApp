@@ -22,7 +22,7 @@ public class MazeListModel implements MazeListContract.Model {
     @Override
     public void fetchMazeListData(MazeListContract.Presenter.MazeListDataFetchedCallback callback) {
         Log.e(TAG, "fetchMazeListData()");
-        repository.loadMazeList(true, error -> {
+        repository.loadMazeList(false, error -> {
             if(error) return;
             repository.getMazeList(m -> {
                 mazeList = m;

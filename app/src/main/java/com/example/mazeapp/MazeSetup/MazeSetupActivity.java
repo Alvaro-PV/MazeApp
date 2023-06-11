@@ -51,14 +51,14 @@ public class MazeSetupActivity extends AppCompatActivity {
         genMazeButtonView = findViewById(R.id.generateMazeButtonView);
         errorTextView = findViewById(R.id.errorTextView);
         methodSpinnerView = findViewById(R.id.methodSpinnerView);
-        methodSpinnerViewAdapter = ArrayAdapter.createFromResource(this, R.array.generationMethods, android.R.layout.simple_spinner_item);
+        methodSpinnerViewAdapter = ArrayAdapter.createFromResource(this, R.array.generationMethodsDisplayNames, android.R.layout.simple_spinner_item);
 
         methodSpinnerViewAdapter.setDropDownViewResource(R.layout.method_list_item);
         methodSpinnerView.setAdapter(methodSpinnerViewAdapter);
         methodSpinnerView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                currentItem = adapterView.getItemAtPosition(i).toString();
+                currentItem = getResources().getStringArray(R.array.generationMethods)[i];
             }
 
             @Override

@@ -1,5 +1,8 @@
 package com.example.mazeapp.MazeGenerator;
 
+import com.example.mazeapp.Data.MazeListItem;
+import com.example.mazeapp.Data.RepositoryContract;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -7,6 +10,7 @@ import java.util.Random;
 
 public class MazeGeneratorModel implements MazeGeneratorContract.Model {
 
+    private RepositoryContract repository;
     private Random random = new Random();
     private int[] cellValues;
     private String generationMethod;
@@ -21,9 +25,10 @@ public class MazeGeneratorModel implements MazeGeneratorContract.Model {
     private ArrayList<int[][]> generationFrames = new ArrayList<>();
     private int frameIndex = 0;
 
-    public MazeGeneratorModel(int[] cellValues, String[] methods) {
+    public MazeGeneratorModel(RepositoryContract repository, int[] cellValues, String[] methods) {
         this.methods = methods;
         this.cellValues = cellValues;
+        this.repository = repository;
     }
 
     @Override
@@ -77,6 +82,38 @@ public class MazeGeneratorModel implements MazeGeneratorContract.Model {
     public int[][] getNextFrame() {
         if(frameIndex >= generationFrames.size()) frameIndex = 0;
         return generationFrames.get(frameIndex++);
+    }
+
+    @Override
+    public void saveCurrentMaze(MazeGeneratorContract.Presenter.SaveCurrentMazeCallback callback) {
+        String cellGrid = "";
+        for(int y = 0; y < cHeight; y++) for(int x = 0; x < cWidth; x++)
+            cellGrid += Integer.toString(cellMatrix[y][x]);
+
+        MazeListItem item = new MazeListItem();
+        item.width = cWidth;
+        item.height = cHeight;
+        item.method = generationMethod;
+        item.author = "NULL";
+        item.cellGrid = cellGrid;
+        repository.getMazeListUsedIds(ids -> {
+            boolean foundUnusedId = false;
+            int id = 0;
+            while (!foundUnusedId){
+                foundUnusedId = true;
+                for(Integer usedId : ids) if (id == usedId){
+                    foundUnusedId = false;
+                    id++;
+                }
+            }
+            item.id = id;
+            repository.addMazeListItem(item, () -> {
+                if(callback != null) callback.onSavedCurrentMaze();
+            });
+        });
+
+
+
     }
 
     private void randomizedDepthFirstSearchAlgorithm(){

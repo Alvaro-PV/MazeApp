@@ -42,7 +42,7 @@ public class MazeListPresenter implements MazeListContract.Presenter {
         }
         for(int x = 0; x < item.width; x++)
             for(int y = 0; y < item.height; y++)
-                cellMatrix[x][y] = Character.getNumericValue(rawMatrix[y * item.width + x]);
+                cellMatrix[y][x] = Character.getNumericValue(rawMatrix[y * item.width + x]);
 
         MazeSetupState mazeSetupState = new MazeSetupState(item.width, item.height, cellMatrix, item.method);
         mediator.setMazeSetupState(mazeSetupState);

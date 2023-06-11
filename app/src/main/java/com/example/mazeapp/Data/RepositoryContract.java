@@ -1,4 +1,5 @@
 package com.example.mazeapp.Data;
+import java.util.ArrayList;
 import java.util.List;
 
 public interface RepositoryContract {
@@ -7,16 +8,12 @@ public interface RepositoryContract {
         void onAppDataFetched(boolean error);
     }
 
-    /*interface GetProductListCallback {
-        void setProductList(List<ProductItem> products);
-    }
-
-    interface GetProductCallback {
-        void setProduct(ProductItem product);
-    }*/
-
     interface GetMazeListCallback {
         void setMazeList(List<MazeListItem> mazeList);
+    }
+
+    interface GetMazeListUsedIdsCallback {
+        void onMazeListUsedIdsRecived(ArrayList<Integer> ids);
     }
 
     interface GetMazeListItemCallback {
@@ -31,31 +28,21 @@ public interface RepositoryContract {
         void onMazeListItemUpdated();
     }
 
-    /*interface DeleteProductCallback {
-        void onProductDeleted();
+    interface AddMazeListItemCallback {
+        void onMazeListItemAdded();
     }
-
-    interface UpdateProductCallback {
-        void onProductUpdated();
-    }*/
-
 
     void loadMazeList(boolean clearFirst, AppRepository.FetchMazeListDataCallback callback);
 
-    //void getProductList(CategoryItem category, CatalogRepository.GetProductListCallback callback);
-    //void getProductList(int categoryId, CatalogRepository.GetProductListCallback callback);
+    void getMazeList(AppRepository.GetMazeListCallback callback);
 
-    //void getProduct(int id, CatalogRepository.GetProductCallback callback);
+    void getMazeListUsedIds(AppRepository.GetMazeListUsedIdsCallback callback);
 
     void getMazeListItem(int id, AppRepository.GetMazeListItemCallback callback);
 
-    void getMazeList(AppRepository.GetMazeListCallback callback);
-
-    //void deleteProduct(ProductItem product, CatalogRepository.DeleteProductCallback callback);
-
-    //void updateProduct(ProductItem product, CatalogRepository.UpdateProductCallback callback);
-
-    void deleteMazeListItem(MazeListItem category, AppRepository.DeleteMazeListItemCallback callback);
+    void deleteMazeListItem(MazeListItem item, AppRepository.DeleteMazeListItemCallback callback);
 
     void updateMazeListItem(MazeListItem item, AppRepository.UpdateMazeListItemCallback callback);
+
+    void addMazeListItem(MazeListItem item, AppRepository.AddMazeListItemCallback callback);
 }

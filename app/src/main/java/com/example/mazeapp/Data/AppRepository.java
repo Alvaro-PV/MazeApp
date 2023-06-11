@@ -18,6 +18,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AppRepository implements RepositoryContract{
 
@@ -71,6 +73,18 @@ public class AppRepository implements RepositoryContract{
     }
 
     @Override
+    public void getMazeListUsedIds(final GetMazeListUsedIdsCallback callback) {
+        AsyncTask.execute(() -> {
+            if(callback == null) return;
+
+            List<MazeListItem> mazeList = getMazeItemListDao().loadMazeList();
+            ArrayList<Integer> usedIds = new ArrayList<>();
+            for(MazeListItem item : mazeList) usedIds.add(item.id);
+            callback.onMazeListUsedIdsRecived(usedIds);
+        });
+    }
+
+    @Override
     public void deleteMazeListItem(final MazeListItem item, final DeleteMazeListItemCallback callback) {
         AsyncTask.execute(() -> {
             if(callback != null) {
@@ -90,15 +104,20 @@ public class AppRepository implements RepositoryContract{
         });
     }
 
+    @Override
+    public void addMazeListItem(final MazeListItem item, final AddMazeListItemCallback callback) {
+        AsyncTask.execute(() -> {
+            if(callback != null) {
+                getMazeItemListDao().insertMazeListItem(item);
+                callback.onMazeListItemAdded();
+            }
+        });
+    }
+
 
     private MazeListItemDao getMazeItemListDao() {
         return database.mazeListItemDao();
     }
-
-    /*private ProductDao getProductDao() {
-        return database.productDao();
-    }*/
-
 
     private boolean loadMazeListFromJSON(String json) {
         Log.e(TAG, "loadMazeListFromJSON()");

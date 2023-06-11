@@ -35,6 +35,13 @@ public class MazeGeneratorPresenter implements MazeGeneratorContract.Presenter {
     }
 
     @Override
+    public void saveCurrentMazeButtonClicked(){
+        model.saveCurrentMaze(() -> {
+            activity.get().onCurrentMazeSaved();
+        });
+    }
+
+    @Override
     public void injectActivity(WeakReference<MazeGeneratorContract.Activity> activity) { this.activity = activity;}
 
     @Override
