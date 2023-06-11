@@ -6,6 +6,8 @@ import android.util.Log;
 
 import androidx.room.Room;
 
+import com.example.mazeapp.Data.Database.UserItemDao;
+import com.example.mazeapp.Data.Database.UserMazeItemRelationDao;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -47,7 +49,7 @@ public class AppRepository implements RepositoryContract{
     }
 
     @Override
-    public void loadMazeList(final boolean clearFirst, final FetchMazeListDataCallback callback) {
+    public void loadAppData(final boolean clearFirst, final FetchAppDataCallback callback) {
         AsyncTask.execute(() -> {
             if(clearFirst) database.clearAllTables();
 
@@ -57,6 +59,8 @@ public class AppRepository implements RepositoryContract{
             if(callback != null) callback.onAppDataFetched(error);
         });
     }
+
+    //--------------------------- MAZE LIST ---------------------------
 
     @Override
     public void getMazeListItem(final int id, final GetMazeListItemCallback callback) {
@@ -80,7 +84,7 @@ public class AppRepository implements RepositoryContract{
             List<MazeListItem> mazeList = getMazeItemListDao().loadMazeList();
             ArrayList<Integer> usedIds = new ArrayList<>();
             for(MazeListItem item : mazeList) usedIds.add(item.id);
-            callback.onMazeListUsedIdsRecived(usedIds);
+            callback.onMazeListUsedIdsReceived(usedIds);
         });
     }
 
@@ -107,17 +111,53 @@ public class AppRepository implements RepositoryContract{
     @Override
     public void addMazeListItem(final MazeListItem item, final AddMazeListItemCallback callback) {
         AsyncTask.execute(() -> {
-            if(callback != null) {
-                getMazeItemListDao().insertMazeListItem(item);
-                callback.onMazeListItemAdded();
-            }
+            getMazeItemListDao().insertMazeListItem(item);
+            if(callback != null) callback.onMazeListItemAdded();
         });
     }
 
+    //--------------------------- USER LIST ---------------------------
+
+    @Override
+    public void getUnusedUserId(final GetUnusedUserIdCallback callback) {
+        AsyncTask.execute(() -> {
+            List<UserItem> userList = getUserItemDao().loadUserList();
+            boolean foundUnusedId = false;
+            int id = 0;
+            while (!foundUnusedId){
+                foundUnusedId = true;
+                for(UserItem user : userList) if (id == user.id){
+                    foundUnusedId = false;
+                    id++;
+                }
+            }
+            if(callback != null) callback.onGetUnusedUserIdCallback(id);
+        });
+    }
+
+    @Override
+    public void getUserList(final GetUserListCallback callback) {
+        AsyncTask.execute(() -> {
+            if(callback != null) callback.onGetUserList(getUserItemDao().loadUserList());
+        });
+    }
+
+    @Override
+    public void addUserItem(final UserItem item, final AddUserItemCallback callback) {
+        AsyncTask.execute(() -> {
+            Log.w(TAG, "Added user with credentials: " + item.id + ", " + item.username + ", " + item.password);
+            getUserItemDao().insertUserItem(item);
+            if(callback != null) callback.onMazeListItemAdded();
+        });
+    }
 
     private MazeListItemDao getMazeItemListDao() {
         return database.mazeListItemDao();
     }
+    private UserItemDao getUserItemDao() {
+        return database.userItemDao();
+    }
+    private UserMazeItemRelationDao getUserMazeItemRelationDao() {return database.userMazeItemRelationDao();}
 
     private boolean loadMazeListFromJSON(String json) {
         Log.e(TAG, "loadMazeListFromJSON()");

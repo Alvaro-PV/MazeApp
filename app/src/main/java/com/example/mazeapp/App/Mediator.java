@@ -1,8 +1,12 @@
 package com.example.mazeapp.App;
 
+import com.example.mazeapp.Data.UserItem;
+
 public class Mediator {
 
     private MazeSetupState mazeSetupState;
+
+    private UserItem activeUser;
     private static Mediator INSTANCE;
     private Mediator() {}
 
@@ -22,5 +26,13 @@ public class Mediator {
 
     public void setMazeSetupState(MazeSetupState mazeSetupState) {
         this.mazeSetupState = mazeSetupState;
+    }
+
+    public UserItem getActiveUser() {
+        return activeUser;
+    }
+
+    public void setActiveUser(UserItem activeUser) {
+        this.activeUser = activeUser;
     }
 }

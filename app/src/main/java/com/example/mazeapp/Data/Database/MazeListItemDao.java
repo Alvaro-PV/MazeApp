@@ -23,9 +23,9 @@ public interface MazeListItemDao {
     @Delete
     void deleteMazeListItem(MazeListItem item);
 
-    @Query("SELECT * FROM mazeTable")
+    @Query("SELECT * FROM maze")
     List<MazeListItem> loadMazeList();
 
-    @Query("SELECT * FROM mazeTable WHERE id = :id LIMIT 1")
+    @Query("SELECT * FROM maze WHERE id = :id LIMIT 1")
     MazeListItem loadMazeListItem(int id);
 }

@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">MazeApp</string>
+    <!-- Maze Setup Activity -->
 
     <!-- Maze Setup Activity -->
     <string name="widthHint">Width</string>
@@ -14,5 +15,16 @@
     <string name="methodListButtonView">Method List</string>
     <string name="logOutButtonView">Log Out</string>
     <string name="maze_list_item">Maze List Item</string>
+    <string name="accountNameTextView">User: %1$s</string>
+
+    <!-- Log And Sign In Activity -->
+    <string name="logInButtonView">Log In</string>
+    <string name="signInButtonView">Sign In</string>
+    <string name="usernameTextView">Username</string>
+    <string name="passwordTextView">Password</string>
+    <string name="credentialsErrorTextViewInvalidUsername">Username field must not be empty</string>
+    <string name="credentialsErrorTextViewInvalidPassword">Password too short (min. 6 characters)</string>
+    <string name="credentialsErrorTextViewLogInError">Invalid credentials</string>
+    <string name="credentialsErrorTextViewSignInError">Username taken</string>
 
 </resources>

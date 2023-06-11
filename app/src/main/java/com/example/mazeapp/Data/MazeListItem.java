@@ -3,12 +3,7 @@ package com.example.mazeapp.Data;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import java.util.List;
-
-//import com.google.gson.annotations.SerializedName;
-
-
-@Entity(tableName = "mazeTable")
+@Entity(tableName = "maze")
 public class MazeListItem {
     @PrimaryKey
     public int id;
