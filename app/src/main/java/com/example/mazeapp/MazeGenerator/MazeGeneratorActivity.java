@@ -80,7 +80,17 @@ public class MazeGeneratorActivity extends AppCompatActivity implements MazeGene
     @Override
     public  void onCurrentMazeSaved(){
         runOnUiThread(() -> {
-            CharSequence text = "Maze Saved";
+            CharSequence text = getString(R.string.savedMaze);
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(this, text, duration);
+            toast.show();
+        });
+    }
+
+    @Override
+    public void onCurrentMazeSetFavorite(){
+        runOnUiThread(() -> {
+            CharSequence text = getString(R.string.addedMazeToFavorites);
             int duration = Toast.LENGTH_SHORT;
             Toast toast = Toast.makeText(this, text, duration);
             toast.show();

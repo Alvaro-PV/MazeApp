@@ -35,6 +35,6 @@ public class MazeListItem {
 
     @Override
     public String toString() {
-        return "S: " + (width - 1) / 2 + "x" + (height - 1) / 2 + ", M: " + method + ", A: " + author;
+        return "Size: " + (width - 1) / 2 + "x" + (height - 1) / 2 + ", Method: " + method + ", Author: " + author;
     }
 }

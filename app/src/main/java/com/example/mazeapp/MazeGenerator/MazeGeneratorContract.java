@@ -11,6 +11,7 @@ public interface MazeGeneratorContract {
         void updateMazeView(int[][] cellMatrix, int cWidth, int cHeight);
         void updateToSavedMazeButtonLayout(boolean isLoggedIn, boolean isFavorite);
         void onCurrentMazeSaved();
+        void onCurrentMazeSetFavorite();
     }
     interface Presenter {
         void injectActivity(WeakReference<Activity> Activity);

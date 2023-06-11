@@ -72,9 +72,7 @@ public class MazeLogAndSignInActivity extends AppCompatActivity {
         if(!credentialsValid()) return;
 
         repository.getUserList(userList -> {
-            Log.e(TAG, "UserList size: " + userList.size());
             for(UserItem user : userList){
-                Log.e(TAG, "user: " + user.username + ", password: " + user.password);
                 if(credentialsMatch(user)) {
                     mediator.setActiveUser(user);
                     navigateToMainMenuActivity();

@@ -1,5 +1,7 @@
 package com.example.mazeapp.MazeGenerator;
 
+import android.util.Log;
+
 import com.example.mazeapp.App.MazeGeneratorState;
 import com.example.mazeapp.App.MazeState;
 import com.example.mazeapp.Data.MazeListItem;
@@ -14,6 +16,7 @@ import java.util.Random;
 
 public class MazeGeneratorModel implements MazeGeneratorContract.Model {
 
+    public static final String TAG = MazeGeneratorActivity.class.getSimpleName();
     private RepositoryContract repository;
     private Random random = new Random();
     private int[] cellValues;
@@ -94,6 +97,7 @@ public class MazeGeneratorModel implements MazeGeneratorContract.Model {
             for(int y = 0; y < activeMaze.height; y++) for(int x = 0; x < activeMaze.width; x++)
                 cellString += Integer.toString(activeMaze.cellMatrix[y][x]);
 
+            Log.e(TAG, cellString);
             activeMaze.id = id;
             activeMaze.cellString = cellString;
             activeMaze.loadingFromSave = true;

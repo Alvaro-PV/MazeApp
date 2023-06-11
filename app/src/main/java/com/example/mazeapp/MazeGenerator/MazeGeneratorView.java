@@ -23,8 +23,8 @@ public class MazeGeneratorView extends View{
     int[] cellColors = {  //REDO WITH STYLES IN MIND !!!!!!!!!!!!!!!!!!!!
         Color.BLACK, //WALL
         Color.WHITE, //PATH
-        Color.GREEN, //ORIGIN
-        Color.BLUE    //ACTIVE
+        Color.LTGRAY, //ORIGIN
+        Color.GRAY    //ACTIVE
     };
 
     private OnClickListener listener;
@@ -76,10 +76,6 @@ public class MazeGeneratorView extends View{
     @Override
     protected void onDraw(Canvas canvas){
         super.onDraw(canvas);
-        Paint ex = new Paint();
-        ex.setColor(Color.RED);
-        Rect background = new Rect(0, 0, getWidth(), getHeight());
-        canvas.drawRect(background, ex);
         if(cellMatrix != null) drawCellArray(canvas);
     }
 

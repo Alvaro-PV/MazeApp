@@ -6,6 +6,8 @@
     <string name="saveAndFavoriteButtonViewSaveState">Save Maze</string>
     <string name="saveAndFavoriteButtonViewFavoriteState">Add to favorites</string>
     <string name="saveAndFavoriteButtonViewUnfavoriteState">Remove from favorites</string>
+    <string name="addedMazeToFavorites">Added to favorites</string>
+    <string name="savedMaze">Maze Saved</string>
 
     <!-- Maze Setup Activity -->
     <string name="widthHint">Width</string>

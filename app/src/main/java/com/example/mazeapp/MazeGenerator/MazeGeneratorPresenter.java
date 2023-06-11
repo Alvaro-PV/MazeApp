@@ -58,6 +58,7 @@ public class MazeGeneratorPresenter implements MazeGeneratorContract.Presenter {
             });
         else {
             model.setFavoriteRelation(mediator.getActiveUser().id);
+            activity.get().onCurrentMazeSetFavorite();
         }
     }
 
