@@ -1,12 +1,14 @@
 package com.example.mazeapp.MazeGenerator;
 
-import com.example.mazeapp.App.MazeSetupState;
+import com.example.mazeapp.App.MazeState;
 import com.example.mazeapp.Data.MazeListItem;
 import com.example.mazeapp.Data.RepositoryContract;
+import com.example.mazeapp.Data.UserMazeItemRelation;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 public class MazeGeneratorModel implements MazeGeneratorContract.Model {
@@ -16,7 +18,7 @@ public class MazeGeneratorModel implements MazeGeneratorContract.Model {
     private int[] cellValues;
     private String[] methods;
     private boolean mazeGenerated = false;
-    private MazeSetupState activeMaze;
+    private MazeState activeMaze;
 
     private ArrayList<int[][]> generationFrames = new ArrayList<>();
     private int frameIndex = -1;
@@ -30,8 +32,8 @@ public class MazeGeneratorModel implements MazeGeneratorContract.Model {
     }
 
     @Override
-    public void setupMaze(MazeSetupState mazeSetupState){
-        activeMaze = mazeSetupState;
+    public void setupMaze(MazeState mazeState){
+        activeMaze = mazeState;
         mazeGenerated = activeMaze.loadingFromSave;
 
         if(!activeMaze.loadingFromSave)
@@ -48,13 +50,7 @@ public class MazeGeneratorModel implements MazeGeneratorContract.Model {
     }
 
     @Override
-    public int getWidth() {
-        return activeMaze.width;
-    }
-    @Override
-    public int getHeight() {
-        return activeMaze.height;
-    }
+    public MazeState getMazeState(){return activeMaze;}
 
     @Override
     public int[][] getNextFrame() {
@@ -77,10 +73,24 @@ public class MazeGeneratorModel implements MazeGeneratorContract.Model {
 
             activeMaze.id = id;
             activeMaze.cellString = cellString;
+            activeMaze.loadingFromSave = true;
             repository.addMazeListItem(activeMaze, () -> {
                 if(callback != null) callback.onSavedCurrentMaze();
             });
         });
+    }
+    @Override
+    public void setFavoriteRelation(int userId){
+        if(!isFavorite) repository.addUserMazeRelation(new UserMazeItemRelation(userId, activeMaze.id), () -> {
+            isFavorite = true;
+        });
+        /*else repository.getMazeItemsForUserItem(userId, mazeList -> {
+            for(MazeListItem mazeListItem : mazeList){
+                if (mazeListItem.id == activeMaze.id){
+                    repository.deleteUserMazeRelation();
+                }
+            }
+        });*/
     }
 
     private void randomizedDepthFirstSearchAlgorithm(){

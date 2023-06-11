@@ -60,19 +60,22 @@ public class MazeGeneratorActivity extends AppCompatActivity implements MazeGene
     }
 
     @Override
-    public void updateToSavedMazeButtonLayout(boolean isFavorite){
-        Log.e(TAG, "updateButtonLayout()");
-        prevStepButtonView.setVisibility(View.GONE);
-        nextStepButtonView.setVisibility(View.GONE);
+    public void updateToSavedMazeButtonLayout(boolean isLoggedIn, boolean isFavorite){
+        runOnUiThread(() -> {
+            Log.e(TAG, "updateButtonLayout()");
+            prevStepButtonView.setVisibility(View.GONE);
+            nextStepButtonView.setVisibility(View.GONE);
 
-        if(isFavorite) saveAndFavoriteButtonView.setText(R.string.saveAndFavoriteButtonViewUnfavoriteState);
-        else saveAndFavoriteButtonView.setText(R.string.saveAndFavoriteButtonViewFavoriteState);
+            saveAndFavoriteButtonView.setEnabled(isLoggedIn);
+
+            if(isFavorite) saveAndFavoriteButtonView.setText(R.string.saveAndFavoriteButtonViewUnfavoriteState);
+            else saveAndFavoriteButtonView.setText(R.string.saveAndFavoriteButtonViewFavoriteState);
+        });
     }
 
     @Override
     public  void onCurrentMazeSaved(){
         runOnUiThread(() -> {
-            updateToSavedMazeButtonLayout(false);
             CharSequence text = "Maze Saved";
             int duration = Toast.LENGTH_SHORT;
             Toast toast = Toast.makeText(this, text, duration);

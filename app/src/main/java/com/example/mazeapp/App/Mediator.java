@@ -4,8 +4,8 @@ import com.example.mazeapp.Data.UserItem;
 
 public class Mediator {
 
-    private MazeSetupState mazeSetupState;
-
+    private MazeState mazeState;
+    private boolean loadingFavoritesList = false;
     private UserItem activeUser;
     private static Mediator INSTANCE;
     private Mediator() {}
@@ -20,12 +20,12 @@ public class Mediator {
         return INSTANCE;
     }
 
-    public MazeSetupState getMazeSetupState() {
-        return mazeSetupState;
+    public MazeState getMazeSetupState() {
+        return mazeState;
     }
 
-    public void setMazeSetupState(MazeSetupState mazeSetupState) {
-        this.mazeSetupState = mazeSetupState;
+    public void setMazeSetupState(MazeState mazeState) {
+        this.mazeState = mazeState;
     }
 
     public UserItem getActiveUser() {
@@ -34,5 +34,13 @@ public class Mediator {
 
     public void setActiveUser(UserItem activeUser) {
         this.activeUser = activeUser;
+    }
+
+    public boolean isLoadingFavoritesList() {
+        return loadingFavoritesList;
+    }
+
+    public void setLoadingFavoritesList(boolean loadingFavoritesList) {
+        this.loadingFavoritesList = loadingFavoritesList;
     }
 }

@@ -7,16 +7,14 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.mazeapp.App.MazeSetupState;
+import com.example.mazeapp.App.MazeState;
 import com.example.mazeapp.App.Mediator;
 import com.example.mazeapp.MazeGenerator.MazeGeneratorActivity;
 import com.example.mazeapp.R;
@@ -95,7 +93,7 @@ public class MazeSetupActivity extends AppCompatActivity {
         if(width > getResources().getInteger(R.integer.mazeMaxSize)) return -2;
         if(height > getResources().getInteger(R.integer.mazeMaxSize)) return -3;
 
-        mediator.setMazeSetupState(new MazeSetupState(width * 2 + 1, height * 2 + 1, mediator.getActiveUser().username, currentItem, true));
+        mediator.setMazeSetupState(new MazeState(width * 2 + 1, height * 2 + 1, mediator.getActiveUser().username, currentItem, true));
         return 0;
     }
 

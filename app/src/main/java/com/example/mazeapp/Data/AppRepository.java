@@ -20,7 +20,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 public class AppRepository implements RepositoryContract{
@@ -72,7 +71,7 @@ public class AppRepository implements RepositoryContract{
     @Override
     public void getMazeList(final GetMazeListCallback callback) {
         AsyncTask.execute(() -> {
-            if(callback != null) callback.setMazeList(getMazeItemListDao().loadMazeList());
+            if(callback != null) callback.onGetMazeList(getMazeItemListDao().loadMazeList());
         });
     }
 
@@ -153,6 +152,40 @@ public class AppRepository implements RepositoryContract{
             Log.w(TAG, "Added user with credentials: " + item.id + ", " + item.username + ", " + item.password);
             getUserItemDao().insertUserItem(item);
             if(callback != null) callback.onMazeListItemAdded();
+        });
+    }
+
+    //--------------------------- USER MAZE RELATION ---------------------------
+
+    @Override
+    public void getUserItemsForMazeItem(int mazeId, final GetUserListCallback callback) {
+        AsyncTask.execute(() -> {
+            if(callback != null) callback.onGetUserList(getUserMazeItemRelationDao().getUserItemsForMazeItem(mazeId));
+        });
+    }
+
+    @Override
+    public void getMazeItemsForUserItem(int userId, final GetMazeListCallback callback) {
+        AsyncTask.execute(() -> {
+            if(callback != null) callback.onGetMazeList(getUserMazeItemRelationDao().getMazeItemsForUserItem(userId));
+        });
+    }
+
+    @Override
+    public void deleteUserMazeRelation(final UserMazeItemRelation relation, final DeleteUserMazeRelationCallback callback) {
+        AsyncTask.execute(() -> {
+            if(callback != null) {
+                getUserMazeItemRelationDao().deleteUserMazeItemRelationDao(relation);
+                callback.onUserMazeRelationDeleted();
+            }
+        });
+    }
+
+    @Override
+    public void addUserMazeRelation(final UserMazeItemRelation relation, final AddUserMazeRelationCallback callback) {
+        AsyncTask.execute(() -> {
+            getUserMazeItemRelationDao().insertUserMazeItemRelationDao(relation);
+            if(callback != null) callback.onUserMazeRelationAdded();
         });
     }
 

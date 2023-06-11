@@ -23,7 +23,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
     Mediator mediator;
 
-    Button createMazeButtonView, mazeListButtonView, logOutButtonView;
+    Button createMazeButtonView, mazeListButtonView, favoriteListButtonView, logOutButtonView;
     TextView accountNameTextView;
 
 
@@ -47,6 +47,13 @@ public class MainMenuActivity extends AppCompatActivity {
 
         mazeListButtonView = findViewById(R.id.mazeListButtonView);
         mazeListButtonView.setOnClickListener(view -> {
+            mediator.setLoadingFavoritesList(false);
+            navigateToMazeListActivity();
+        });
+
+        favoriteListButtonView = findViewById(R.id.favoriteListButtonView);
+        favoriteListButtonView.setOnClickListener(view -> {
+            mediator.setLoadingFavoritesList(true);
             navigateToMazeListActivity();
         });
 
@@ -56,7 +63,16 @@ public class MainMenuActivity extends AppCompatActivity {
         });
 
         accountNameTextView = findViewById(R.id.accountNameTextView);
-        if(mediator.getActiveUser() != null) accountNameTextView.setText(getString(R.string.accountNameTextView, mediator.getActiveUser().username));
+        if(mediator.getActiveUser() == null) return;
+
+        if(mediator.getActiveUser().id != -1){
+            accountNameTextView.setText(getString(R.string.accountNameTextView, mediator.getActiveUser().username));
+            favoriteListButtonView.setEnabled(true);
+            logOutButtonView.setText(R.string.logOutButtonViewWithUser);
+        } else{
+            favoriteListButtonView.setEnabled(false);
+            logOutButtonView.setText(R.string.logOutButtonViewWithOutUser);
+        }
     }
 
     private void navigateToMazeSetupActivity() {

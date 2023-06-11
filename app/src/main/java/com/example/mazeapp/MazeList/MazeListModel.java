@@ -19,14 +19,21 @@ public class MazeListModel implements MazeListContract.Model {
     }
 
     @Override
-    public void fetchMazeListData(MazeListContract.Presenter.MazeListDataFetchedCallback callback) {
+    public void fetchMazeListData(int userId, MazeListContract.Presenter.MazeListDataFetchedCallback callback) {
         Log.e(TAG, "fetchMazeListData()");
         repository.loadAppData(false, error -> {
             if(error) return;
-            repository.getMazeList(m -> {
-                mazeList = m;
-                callback.onMazeListDataFetched();
-            });
+
+            if(userId == -1)
+                repository.getMazeList(m -> {
+                    mazeList = m;
+                    callback.onMazeListDataFetched();
+                });
+            else
+                repository.getMazeItemsForUserItem(userId, m -> {
+                    mazeList = m;
+                    callback.onMazeListDataFetched();
+                });
         });
     }
 

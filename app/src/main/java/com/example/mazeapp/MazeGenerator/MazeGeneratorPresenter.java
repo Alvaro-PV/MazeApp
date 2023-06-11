@@ -2,7 +2,7 @@ package com.example.mazeapp.MazeGenerator;
 
 import android.util.Log;
 
-import com.example.mazeapp.App.MazeSetupState;
+import com.example.mazeapp.App.MazeState;
 import com.example.mazeapp.App.Mediator;
 import com.example.mazeapp.MazeLogAndSignIn.MazeLogAndSignInActivity;
 
@@ -21,12 +21,12 @@ public class MazeGeneratorPresenter implements MazeGeneratorContract.Presenter {
     @Override
     public void onStart(){
         Log.e(TAG, "onStart()");
-        MazeSetupState mazeSetupState = mediator.getMazeSetupState();
-        if(mazeSetupState == null) return;
+        MazeState mazeState = mediator.getMazeSetupState();
+        if(mazeState == null) return;
 
-        model.setupMaze(mazeSetupState);
-        activity.get().updateMazeView(model.getNextFrame(), model.getWidth(), model.getHeight());
-        if(mazeSetupState.loadingFromSave) activity.get().updateToSavedMazeButtonLayout(false);
+        model.setupMaze(mazeState);
+        onNextFrameButtonClicked();
+        if(mazeState.loadingFromSave) activity.get().updateToSavedMazeButtonLayout(mediator.getActiveUser().id != -1, false);
     }
 
     @Override
@@ -35,19 +35,24 @@ public class MazeGeneratorPresenter implements MazeGeneratorContract.Presenter {
     }
     @Override
     public void onNextFrameButtonClicked(){
-        activity.get().updateMazeView(model.getNextFrame(), model.getWidth(), model.getHeight());
+        activity.get().updateMazeView(model.getNextFrame(), model.getMazeState().width, model.getMazeState().height);
     }
 
     @Override
     public void onPreviousFrameButtonClicked(){
-        activity.get().updateMazeView(model.getPreviousFrame(), model.getWidth(), model.getHeight());
+        activity.get().updateMazeView(model.getPreviousFrame(), model.getMazeState().width, model.getMazeState().height);
     }
 
     @Override
     public void saveAndFavoriteButtonClicked(){
-        model.saveCurrentMaze(() -> {
-            activity.get().onCurrentMazeSaved();
-        });
+        if(!model.getMazeState().loadingFromSave)
+            model.saveCurrentMaze(() -> {
+                activity.get().onCurrentMazeSaved();
+                activity.get().updateToSavedMazeButtonLayout(mediator.getActiveUser().id != -1, false);
+            });
+        else {
+            model.setFavoriteRelation(mediator.getActiveUser().id);
+        }
     }
 
     @Override

@@ -31,7 +31,7 @@ public class MazeLogAndSignInActivity extends AppCompatActivity {
     public static final String TAG = MazeLogAndSignInActivity.class.getSimpleName();
     Mediator mediator;
     RepositoryContract repository;
-    Button logInButtonView, signInButtonView;
+    Button logInButtonView, signInButtonView, continueAsGuestButtonView;
     EditText usernameTextView, passwordTextView;
     TextView credentialsErrorTextView;
 
@@ -51,6 +51,7 @@ public class MazeLogAndSignInActivity extends AppCompatActivity {
 
         logInButtonView = findViewById(R.id.logInButtonView);
         signInButtonView = findViewById(R.id.signInButtonView);
+        continueAsGuestButtonView = findViewById(R.id.continueAsGuestButtonView);
         usernameTextView = findViewById(R.id.usernameTextView);
         passwordTextView = findViewById(R.id.passwordTextView);
         credentialsErrorTextView = findViewById(R.id.credentialsErrorTextView);
@@ -60,6 +61,10 @@ public class MazeLogAndSignInActivity extends AppCompatActivity {
         });
         signInButtonView.setOnClickListener(view -> {
             onSignInButtonViewClicked();
+        });
+        continueAsGuestButtonView.setOnClickListener(view -> {
+            mediator.setActiveUser(new UserItem(-1, "Guest", ""));
+            navigateToMainMenuActivity();
         });
     }
 

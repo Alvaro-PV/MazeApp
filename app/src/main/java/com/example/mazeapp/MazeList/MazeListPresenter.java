@@ -2,7 +2,7 @@ package com.example.mazeapp.MazeList;
 
 import android.util.Log;
 
-import com.example.mazeapp.App.MazeSetupState;
+import com.example.mazeapp.App.MazeState;
 import com.example.mazeapp.App.Mediator;
 import com.example.mazeapp.Data.MazeListItem;
 
@@ -22,7 +22,7 @@ public class MazeListPresenter implements MazeListContract.Presenter {
         Log.e(TAG, "fetchCategoryListData()");
 
         // call the model
-        model.fetchMazeListData(() -> {
+        model.fetchMazeListData(mediator.isLoadingFavoritesList() ? mediator.getActiveUser().id : -1, () -> {
             activity.get().displayMazeList(model.getMazeList());
         });
     }
@@ -31,8 +31,8 @@ public class MazeListPresenter implements MazeListContract.Presenter {
     public void selectMazeItem(MazeListItem item) {
         Log.e(TAG, "selectMazeItem()");
 
-        MazeSetupState mazeSetupState = new MazeSetupState(item);
-        mediator.setMazeSetupState(mazeSetupState);
+        MazeState mazeState = new MazeState(item);
+        mediator.setMazeSetupState(mazeState);
         activity.get().navigateToMazeGeneratorActivity();
     }
 

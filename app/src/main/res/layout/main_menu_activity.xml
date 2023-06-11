@@ -28,10 +28,10 @@
             android:text="@string/mazeListButtonView" />
 
         <Button
-            android:id="@+id/methodListButtonView"
+            android:id="@+id/favoriteListButtonView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/methodListButtonView" />
+            android:text="@string/favoriteListButtonView" />
     </LinearLayout>
 
     <TextView
@@ -49,7 +49,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text="@string/logOutButtonView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -17,19 +17,22 @@
 
     <!-- Main Menu Activity -->
     <string name="createMazeButtonView">Create New Maze</string>
-    <string name="mazeListButtonView">Maze List</string>
-    <string name="methodListButtonView">Method List</string>
-    <string name="logOutButtonView">Log Out</string>
+    <string name="mazeListButtonView">All Mazes</string>
+    <string name="favoriteListButtonView">Favorite Mazes</string>
+    <string name="logOutButtonViewWithUser">Log Out</string>
+    <string name="logOutButtonViewWithOutUser">Exit</string>
     <string name="maze_list_item">Maze List Item</string>
     <string name="accountNameTextView">User: %1$s</string>
 
     <!-- Log And Sign In Activity -->
     <string name="logInButtonView">Log In</string>
     <string name="signInButtonView">Sign In</string>
+    <string name="continueAsGuestButtonView">Continue as a guest</string>
     <string name="usernameTextView">Username</string>
     <string name="passwordTextView">Password</string>
     <string name="credentialsErrorTextViewInvalidCredentials">%1$s must be between %2$d and %3$d characters long</string>
     <string name="credentialsErrorTextViewLogInError">Invalid credentials</string>
     <string name="credentialsErrorTextViewSignInError">Username taken</string>
+
 
 </resources>

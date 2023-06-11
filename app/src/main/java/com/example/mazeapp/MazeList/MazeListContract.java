@@ -29,7 +29,7 @@ public interface MazeListContract {
     }
 
     interface Model {
-        void fetchMazeListData(MazeListContract.Presenter.MazeListDataFetchedCallback callback);
+        void fetchMazeListData(int userId, MazeListContract.Presenter.MazeListDataFetchedCallback callback);
         List<MazeListItem> getMazeList();
     }
 }

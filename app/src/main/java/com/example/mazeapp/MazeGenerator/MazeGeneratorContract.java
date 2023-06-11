@@ -1,6 +1,6 @@
 package com.example.mazeapp.MazeGenerator;
 
-import com.example.mazeapp.App.MazeSetupState;
+import com.example.mazeapp.App.MazeState;
 
 import java.lang.ref.WeakReference;
 
@@ -8,7 +8,7 @@ public interface MazeGeneratorContract {
     interface Activity {
         void injectPresenter(Presenter presenter);
         void updateMazeView(int[][] cellMatrix, int cWidth, int cHeight);
-        void updateToSavedMazeButtonLayout(boolean isFavorite);
+        void updateToSavedMazeButtonLayout(boolean isLoggedIn, boolean isFavorite);
         void onCurrentMazeSaved();
     }
     interface Presenter {
@@ -24,12 +24,11 @@ public interface MazeGeneratorContract {
         }
     }
     interface Model {
-        void setupMaze(MazeSetupState mazeSetupState);
-        int getWidth();
-        int getHeight();
+        void setupMaze(MazeState mazeState);
+        MazeState getMazeState();
         int[][] getNextFrame();
         int[][] getPreviousFrame();
         void saveCurrentMaze(MazeGeneratorContract.Presenter.SaveCurrentMazeCallback callback);
-
+        void setFavoriteRelation(int userId);
     }
 }
